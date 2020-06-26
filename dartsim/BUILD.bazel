@@ -95,6 +95,7 @@ cc_library(
     srcs = [src],
     deps = [
         ":dartsim",
+        "//dart",
         "//ign_physics/test:test_utils",
         "@gtest//:gtest",
         "@gtest//:gtest_main",
