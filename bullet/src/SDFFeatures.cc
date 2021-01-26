@@ -123,6 +123,7 @@ Identity SDFFeatures::ConstructSdfLink(
   btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, collision_shape, linkInertiaDiag);
   btRigidBody* body = new btRigidBody(rbInfo);
   body->setActivationState(DISABLE_DEACTIVATION);
+  body->setFlags(BT_ENABLE_GYROPSCOPIC_FORCE);
 
   const auto &world = this->worlds.at(modelInfo->world)->world;
   world->addRigidBody(body);
@@ -319,15 +320,18 @@ Identity SDFFeatures::ConstructSdfJoint(
   const auto &world = this->worlds.at(modelInfo->world)->world;
   world->addConstraint(joint, true);
   joint->enableFeedback(true);
-
-  if (_sdfJoint.Axis(0) != nullptr) {
+  if (_sdfJoint.Axis(0) != nullptr)
+  {
     double friction = _sdfJoint.Axis(0)->Friction();
     joint->enableAngularMotor(true, 0.0, friction);
   }
+  if (type == ::sdf::JointType::FIXED) {
+    btScalar offset = joint->getHingeAngle();
+    joint->setLimit(offset, offset);
+  }
 
   // Generate an identity for it and return it
-  auto identity =
-    this->AddJoint({_sdfJoint.Name(), joint, childId, parentId, static_cast<int>(type), axis});
+  auto identity = this->AddJoint({_sdfJoint.Name(), joint, childId, parentId, static_cast<int>(type), axis});
   return identity;
 }
 
