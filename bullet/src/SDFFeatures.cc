@@ -320,6 +320,9 @@ Identity SDFFeatures::ConstructSdfJoint(
   const auto &world = this->worlds.at(modelInfo->world)->world;
   world->addConstraint(joint, true);
   joint->enableFeedback(true);
+  // joint->setParam(BT_CONSTRAINT_STOP_ERP, 0.8, 3);
+  // joint->setParam(BT_CONSTRAINT_STOP_ERP, 0.8, 4);
+  // joint->setParam(BT_CONSTRAINT_STOP_ERP, 0.8, 5);
   if (_sdfJoint.Axis(0) != nullptr)
   {
     double friction = _sdfJoint.Axis(0)->Friction();

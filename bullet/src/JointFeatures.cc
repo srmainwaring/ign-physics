@@ -51,7 +51,7 @@ double JointFeatures::GetJointPosition(
     }
     else
     {
-      ignerr << "Not a valid constrating type: " << jointType << "\n";
+      // ignerr << "Not a valid constrating type: " << jointType << "\n";
     }
   }
   return result;
